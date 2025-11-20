@@ -19,10 +19,10 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { UsersService } from './users.service';
-import { UserEntity } from './entities/users.entity';
-import { CreateUserDto } from './dto/create-user.dto';
-import { JwtAuthGuard } from 'src/auth/auth/jwt-auth.guard';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { UserEntity } from '../entities/users.entity';
+import { CreateUserDto } from '../dto/create-user.dto';
+import { UpdateUserDto } from '../dto/update-user.dto';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 
 @Controller('users')
 @ApiTags('users')

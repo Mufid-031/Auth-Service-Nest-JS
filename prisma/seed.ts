@@ -24,6 +24,7 @@ async function main() {
       email: 'sabin@adams.com',
       name: 'Sabin Adams',
       password: passwordSabin,
+      role: 'ADMIN',
     },
   });
 
@@ -36,6 +37,7 @@ async function main() {
       email: 'alex@ruheni.com',
       name: 'Alex Ruheni',
       password: passwordAlex,
+      role: 'STUDENT',
     },
   });
 }
