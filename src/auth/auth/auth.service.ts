@@ -1,9 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import {
   Injectable,
   NotFoundException,
@@ -57,7 +53,12 @@ export class AuthService {
       throw new UnauthorizedException('Invalid password');
     }
 
-    const tokens = await this.generateTokens(user.id, user.role);
+    const tokens = await this.generateTokens(
+      user.id,
+      user.name,
+      user.email,
+      user.role,
+    );
 
     await this.prisma.session.create({
       data: {
@@ -74,8 +75,18 @@ export class AuthService {
     };
   }
 
-  async generateTokens(userId: number, role: string) {
-    const payload = { id: userId, role };
+  async generateTokens(
+    userId: number,
+    name: string,
+    email: string,
+    role: string,
+  ) {
+    const payload = {
+      id: userId,
+      name,
+      email,
+      role,
+    };
     const accessToken = await this.jwtService.signAsync({
       ...payload,
       expiresIn: '1h',
@@ -99,11 +110,17 @@ export class AuthService {
   async refresh(token: string) {
     const session = await this.prisma.session.findFirst({
       where: { refreshToken: token },
+      include: { user: true },
     });
 
     if (!session) throw new UnauthorizedException('Invalid refresh token');
 
-    const newTokens = await this.generateTokens(session.userId, 'STUDENT');
+    const newTokens = await this.generateTokens(
+      session.userId,
+      session.user.name,
+      session.user.email,
+      session.user.role,
+    );
 
     return newTokens;
   }
