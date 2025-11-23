@@ -28,6 +28,9 @@ export class AuthService {
       throw new UnauthorizedException('Email already exists');
     }
 
+    const hashedPassword = await bcrypt.hash(registerDto.password, 10);
+    registerDto.password = hashedPassword;
+
     const user = await this.prisma.user.create({
       data: registerDto,
     });
