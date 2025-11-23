@@ -15,7 +15,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { UsersService } from './users.service';
-import { UserEntity } from '../entities/users.entity';
+import { UsersEntity } from '../entities/users.entity';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
@@ -26,41 +26,41 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
-  @ApiCreatedResponse({ type: UserEntity })
+  @ApiCreatedResponse({ type: UsersEntity })
   async create(@Body() createUserDto: CreateUserDto) {
-    return new UserEntity(await this.usersService.create(createUserDto));
+    return new UsersEntity(await this.usersService.create(createUserDto));
   }
 
   @Get()
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
-  @ApiOkResponse({ type: UserEntity, isArray: true })
+  @ApiOkResponse({ type: UsersEntity, isArray: true })
   async findAll() {
     const users = await this.usersService.findAll();
-    return users.map((user) => new UserEntity(user));
+    return users.map((user) => new UsersEntity(user));
   }
 
   @Get(':id')
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
-  @ApiOkResponse({ type: UserEntity })
+  @ApiOkResponse({ type: UsersEntity })
   async findOne(@Param('id') id: number) {
-    return new UserEntity(await this.usersService.findOne(Number(id)));
+    return new UsersEntity(await this.usersService.findOne(Number(id)));
   }
 
   @Patch(':id')
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
-  @ApiOkResponse({ type: UserEntity })
+  @ApiOkResponse({ type: UsersEntity })
   async update(@Body() id: number, @Body() updateUserDto: UpdateUserDto) {
-    return new UserEntity(await this.usersService.update(id, updateUserDto));
+    return new UsersEntity(await this.usersService.update(id, updateUserDto));
   }
 
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
-  @ApiOkResponse({ type: UserEntity })
+  @ApiOkResponse({ type: UsersEntity })
   remove(@Body() id: number) {
-    return new UserEntity(this.usersService.remove(id));
+    return new UsersEntity(this.usersService.remove(id));
   }
 }

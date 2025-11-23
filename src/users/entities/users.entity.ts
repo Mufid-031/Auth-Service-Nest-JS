@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { ApiProperty } from '@nestjs/swagger';
 
-export class UserEntity {
+export class UsersEntity {
   constructor(user) {
     this.id = user.id;
     this.name = user.name;
